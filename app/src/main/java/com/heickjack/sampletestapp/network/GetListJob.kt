@@ -14,7 +14,7 @@ class GetListJob(private val postModel: PostGetListModel) : BaseJob() {
     override fun onRun() {
         super.onRun()
 
-            val response = retrofit.create(HttpClient::class.java).getList(postModel).execute()
+            val response = retrofit.create(HttpClient::class.java).getList(postModel.id, postModel.token).execute()
 
             if (isSuccess(response) && response.body() != null) {
                 if (response.body()!!.status!!.code == 200){

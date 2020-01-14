@@ -16,6 +16,7 @@ class ListItemMerchant(var merchant:Merchant) : BindableItem<ListItemMerchantBin
     override fun bind(viewBinding: ListItemMerchantBinding, position: Int) {
         mBinding = viewBinding
 
+        mBinding.textId.text = "ID: ${merchant.id}"
         mBinding.textName.text = merchant.list_name
         mBinding.textDistance.text = String.format(mBinding.root.context.getString(R.string.text_km_away), merchant.distance)
     }

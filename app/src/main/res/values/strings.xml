@@ -12,5 +12,7 @@
     <string name="text_cancel">Cancel</string>
     <string name="text_hint_merchant_name">merchant name</string>
     <string name="text_hint_merchant_distance">merchant distance</string>
-    <string name="text_draw_number_exceeded">Draw number must be within 0-10000</string>
+    <string name="text_draw_number_exceeded">Draw number must be within 0–10000</string>
+    <string name="text_update">Update</string>
+    <string name="text_logout">Logout</string>
 </resources>

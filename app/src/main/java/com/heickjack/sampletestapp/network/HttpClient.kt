@@ -7,17 +7,24 @@ import com.heickjack.sampletestapp.model.postmodel.PostUpdateModel
 import com.heickjack.sampletestapp.model.responseModel.ResponseGetList
 import com.heickjack.sampletestapp.model.responseModel.ResponseLogin
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface HttpClient {
 
     @POST("login")
-    fun login(@Body postModel: PostLoginModel):Call<ResponseLogin>
+    @FormUrlEncoded
+    fun login(@Field("email") email:String,
+              @Field("password") password:String):Call<ResponseLogin>
 
-    @POST("listing")
-    fun getList(@Body postModel: PostGetListModel):Call<ResponseGetList>
+    @GET("listing")
+    fun getList(@Query("id") id:String,
+                @Query("token") token:String):Call<ResponseGetList>
 
     @POST("listing/update")
-    fun updateItem(@Body postModel:PostUpdateModel):Call<BaseResponse>
+    @FormUrlEncoded
+    fun updateItem(@Field("id") id:String,
+                   @Field("token") token: String,
+                   @Field("listing_id") listingId:String,
+                   @Field("listing_name") listingName:String,
+                   @Field("distance") distance:String):Call<BaseResponse>
 }

@@ -46,6 +46,8 @@ class HomeActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+        super.loading = mBinding.loadingLayout
+
         prepareRecyclerView()
         prepareDataListener()
         getData(0)
@@ -87,7 +89,7 @@ class HomeActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 builder
                     .setView(mUpdateView)
                     .setPositiveButton(
-                        R.string.text_ok
+                        R.string.text_update
                     ) { _, _ ->
                         showLoading()
                         mViewModel.updateListItem(
@@ -105,6 +107,14 @@ class HomeActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                     .show()
             }
             true
+        }
+        mAdapter?.setOnItemClickListener { item, view ->
+            if (item is ListItemMerchant){
+                Toast.makeText(
+                    view.context,
+                    item.merchant.list_name + "(" + item.merchant.distance + "km away)",
+                    Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -151,6 +161,7 @@ class HomeActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         mViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         mViewModel.onGetListListener().observe(this, Observer {
             hideLoading()
+            mBinding.swipeRefreshLayout.isRefreshing = false
             mSection?.clear()
             for (item in it) {
                 mSection?.add(ListItemMerchant(item))

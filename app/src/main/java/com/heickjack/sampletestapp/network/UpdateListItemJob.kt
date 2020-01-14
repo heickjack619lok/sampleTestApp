@@ -13,17 +13,26 @@ class UpdateListItemJob(private val postModel: PostUpdateModel) : BaseJob() {
     override fun onRun() {
         super.onRun()
 
-            val response = retrofit.create(HttpClient::class.java).updateItem(postModel).execute()
+        val response = retrofit
+            .create(HttpClient::class.java)
+            .updateItem(
+                postModel.id,
+                postModel.token,
+                postModel.listing_id,
+                postModel.listing_name,
+                postModel.distance
+            )
+            .execute()
 
-            if (isSuccess(response) && response.body() != null) {
-                if (response.body()!!.status!!.code == 200){
-                    data.postValue(Resource.success(response.body()))
-                }else{
-                    data.postValue(Resource.error(null, response.body()))
-                }
+        if (isSuccess(response) && response.body() != null) {
+            if (response.body()!!.status!!.code == 200) {
+                data.postValue(Resource.success(response.body()))
             } else {
-                data.postValue(Resource.error(null, errorBody(response.errorBody())))
+                data.postValue(Resource.error(null, response.body()))
             }
+        } else {
+            data.postValue(Resource.error(null, errorBody(response.errorBody())))
+        }
     }
 
     override fun onCancel(cancelReason: Int, throwable: Throwable?) {

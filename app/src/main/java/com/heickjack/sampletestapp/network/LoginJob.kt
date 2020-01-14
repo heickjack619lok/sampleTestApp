@@ -15,7 +15,7 @@ class LoginJob(private val postModel: PostLoginModel) : BaseJob() {
     override fun onRun() {
         super.onRun()
 
-            val responseLogin = retrofit.create(HttpClient::class.java).login(postModel).execute()
+            val responseLogin = retrofit.create(HttpClient::class.java).login(postModel.email, postModel.password).execute()
 
             if (isSuccess(responseLogin) && responseLogin.body() != null) {
                 if (responseLogin.body()!!.status!!.code == 200){
